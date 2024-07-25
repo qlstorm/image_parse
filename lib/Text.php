@@ -3,7 +3,7 @@
     class Text {
 
         public static function spell($n, $s1, $s2, $s3) {
-            if($n >= 11 and $n <= 19) {
+            if($n >= 11 && $n <= 19) {
                 return $s3;
             }
 
