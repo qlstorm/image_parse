@@ -1,6 +1,6 @@
 <?php
 
-    class Rus {
+    class Text {
 
         public static function spell($n, $s1, $s2, $s3) {
             if($n >= 11 and $n <= 19) {
