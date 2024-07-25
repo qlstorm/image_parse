@@ -39,8 +39,12 @@
 
             $matches[1] = array_unique($matches[1]);
 
-            foreach ($matches[1] as $imageSource) {
+            foreach ($matches[1] as $i => $imageSource) {
                 $remoteSource = $imageSource;
+
+                if (substr($remoteSource, 0, 2) == '//') {
+                    $remoteSource = str_replace('//', 'https://', $remoteSource);
+                }
 
                 $sourceResult = file_get_contents($remoteSource);
 
@@ -54,7 +58,6 @@
                             break;
                         }
                     }
-                    
                 }
 
                 if ($sourceResult) {
@@ -63,12 +66,12 @@
                     $size += strlen($sourceResult);
 
                     $count++;
+                }
 
-                    if (count($imageListRow) == self::$columnCount || $count == count($matches[1])) {
-                        $imageList[] = $imageListRow;
+                if (count($imageListRow) == self::$columnCount || $i + 1 == count($matches[1])) {
+                    $imageList[] = $imageListRow;
 
-                        $imageListRow = [];
-                    }
+                    $imageListRow = [];
                 }
             }
 
