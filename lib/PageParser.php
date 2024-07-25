@@ -59,9 +59,6 @@
 
             $matches[1] = array_unique($matches[1]);
 
-            $row = 0;
-            $column = 0;
-
             foreach ($matches[1] as $imageSource) {
                 $remoteSource = $imageSource;
 
@@ -81,17 +78,16 @@
                 }
 
                 if ($sourceResult) {
-                    $imageList[$row][$column] = $remoteSource;
+                    $imageListRow[] = $remoteSource;
 
                     $size += strlen($sourceResult);
 
                     $count++;
 
-                    $column++;
+                    if (count($imageListRow) == self::$columnCount || $count == count($matches[1])) {
+                        $imageList[] = $imageListRow;
 
-                    if ($column == self::$columnCount) {
-                        $row++;
-                        $column = 0;
+                        $imageListRow = [];
                     }
                 }
             }
