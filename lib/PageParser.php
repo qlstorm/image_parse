@@ -17,18 +17,38 @@
         public static function parse($url) {
             $content = file_get_contents($url);
 
-            $urlResult = parse_url($url);
-
             $hostList = [];
 
-            $host = $urlResult['scheme'] . '://' . $urlResult['host'];
+            preg_match('/(.+\/\/.+?)\//', $url, $matches);
 
-            $hostList[] = $host;
-            $hostList[] = $host . '/';
+            if ($matches[1]) {
+                $hostList[] = $matches[1];
+            }
 
-            preg_match('/(.+\/)/', $urlResult['path'], $match);
+            preg_match('/(.+\/\/.+\/)/', $url, $matches);
 
-            $hostList[] = $host . $match[1];
+            if ($matches[1]) {
+                $hostList[] = $matches[1];
+            }
+
+            preg_match('/(.+?)\//', $url, $matches);
+
+            if ($matches[1] && !in_array($matches[1], ['https:', 'http:', ''])) {
+                $hostList[] = $matches[1];
+            }
+
+            preg_match('/(.+\/)/', $url, $matches);
+
+            if ($matches[1] && !in_array($matches[1], ['https:/', 'http:/', ''])) {
+                $hostList[] = $matches[1];
+            }
+
+            if (!$hostList) {
+                $hostList[] = $url;
+                $hostList[] = $url . '/';
+            }
+
+            $matches = [];
 
             preg_match_all('/img.*?src="(\S+)"/', $content, $matches);
 
