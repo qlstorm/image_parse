@@ -21,7 +21,11 @@
 
             $hostList = [];
 
-            $host = $urlResult['scheme'] . '://' . $urlResult['host'];
+            $host = $urlResult['host'];
+
+            if ($urlResult['scheme']) {
+                $host = $urlResult['scheme'] . '://' . $urlResult['host'];
+            }
 
             $hostList[] = $host;
             $hostList[] = $host . '/';
